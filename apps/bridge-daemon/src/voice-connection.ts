@@ -432,6 +432,8 @@ export class VoiceConnectionHandler {
 
   /**
    * Destroy connection
+   *
+   * Robust cleanup that attempts all steps even if some fail
    */
   private destroyConnection(sessionId: string): void {
     const connection = this.connections.get(sessionId);
@@ -443,16 +445,32 @@ export class VoiceConnectionHandler {
     logger.info({ sessionId }, 'Destroying connection');
 
     // Stop ingress pump
-    connection.ingressPump.stop();
+    try {
+      connection.ingressPump.stop();
+    } catch (error) {
+      logger.error({ sessionId, error }, 'Error stopping ingress pump');
+    }
 
     // Stop egress pump
-    connection.egressPump.destroy();
+    try {
+      connection.egressPump.destroy();
+    } catch (error) {
+      logger.error({ sessionId, error }, 'Error destroying egress pump');
+    }
 
     // End Omni session
-    connection.omniClient.disconnect();
+    try {
+      connection.omniClient.disconnect();
+    } catch (error) {
+      logger.error({ sessionId, error }, 'Error disconnecting Omni client');
+    }
 
     // Destroy Discord voice connection
-    connection.voiceConnection.destroy();
+    try {
+      connection.voiceConnection.destroy();
+    } catch (error) {
+      logger.error({ sessionId, error }, 'Error destroying voice connection');
+    }
 
     // Remove from tracking
     this.connections.delete(sessionId);
@@ -461,6 +479,8 @@ export class VoiceConnectionHandler {
         this.connectionByUser.delete(userId);
       }
     }
+
+    logger.info({ sessionId }, 'Connection cleanup complete');
 
     // Leave Discord voice channel
     // This is handled by the bot's voice connection cleanup
