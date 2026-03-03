@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["node"],
+    "noEmit": false,
+    "emitDeclarationOnly": false
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../packages/shared-config" },
+    { "path": "../../packages/audio-engine" },
+    { "path": "../../packages/provider-volcengine-omni" },
+    { "path": "../../packages/memory-bank" },
+    { "path": "../../packages/backend-dispatcher" },
+    { "path": "../../packages/core-runtime" }
+  ]
+}

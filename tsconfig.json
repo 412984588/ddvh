@@ -1,0 +1,15 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./apps/bridge-daemon" },
+    { "path": "./packages/core-runtime" },
+    { "path": "./packages/audio-engine" },
+    { "path": "./packages/provider-volcengine-omni" },
+    { "path": "./packages/memory-bank" },
+    { "path": "./packages/backend-dispatcher" },
+    { "path": "./packages/shared-config" },
+    { "path": "./packages/openclaw-plugin" },
+    { "path": "./packages/claude-mcp-server" },
+    { "path": "./packages/claude-marketplace" }
+  ]
+}

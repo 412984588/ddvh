@@ -1,0 +1,8 @@
+{
+  "name": "voice-hub",
+  "command": "node",
+  "args": ["packages/claude-mcp-server/dist/index.js"],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

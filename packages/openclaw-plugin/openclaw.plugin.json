@@ -1,0 +1,43 @@
+{
+  "name": "voice-hub",
+  "version": "0.1.0",
+  "description": "Discord voice bridge to Volcengine Doubao Omni Realtime WebSocket",
+  "author": "@voice-hub",
+  "license": "MIT",
+  "type": "plugin",
+  "entry": "dist/index.js",
+  "commands": {
+    "start": {
+      "description": "Start the voice hub bridge daemon",
+      "handler": "start"
+    },
+    "stop": {
+      "description": "Stop the voice hub bridge daemon",
+      "handler": "stop"
+    },
+    "status": {
+      "description": "Check voice hub status",
+      "handler": "status"
+    },
+    "doctor": {
+      "description": "Run diagnostics on voice hub setup",
+      "handler": "doctor"
+    },
+    "health": {
+      "description": "Health check for all services",
+      "handler": "health"
+    }
+  },
+  "dependencies": ["discord.js", "@discordjs/voice"],
+  "environment": [
+    "DISCORD_BOT_TOKEN",
+    "DISCORD_CLIENT_ID",
+    "VOLCENGINE_OMNI_ENDPOINT",
+    "VOLCENGINE_OMNI_API_KEY",
+    "VOLCENGINE_OMNI_MODEL"
+  ],
+  "installation": {
+    "type": "npm",
+    "command": "pnpm install"
+  }
+}

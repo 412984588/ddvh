@@ -1,0 +1,50 @@
+name: Bug Report
+description: Report a reproducible defect
+labels: [bug]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary / 问题概述
+      description: What happened? Expected behavior?
+      placeholder: A clear and concise description
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce / 复现步骤
+      description: Minimal reproducible steps
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and Output / 日志输出
+      description: Paste relevant logs, stack traces, screenshots
+      render: shell
+
+  - type: input
+    id: version
+    attributes:
+      label: Version / 版本
+      placeholder: e.g. v0.1.0 or commit SHA
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area / 影响模块
+      options:
+        - bridge-daemon
+        - core-runtime
+        - audio-engine
+        - provider-volcengine-omni
+        - backend-dispatcher
+        - memory-bank
+        - docs/tooling

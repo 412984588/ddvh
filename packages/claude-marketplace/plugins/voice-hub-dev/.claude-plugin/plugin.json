@@ -1,0 +1,7 @@
+{
+  "name": "voice-hub-dev",
+  "version": "0.1.0",
+  "description": "Voice Hub development tools and workflows",
+  "author": "@voice-hub",
+  "skills": ["scaffold", "doctor", "pack"]
+}

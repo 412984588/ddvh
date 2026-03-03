@@ -1,0 +1,34 @@
+name: Feature Request
+description: Suggest an improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement / 问题背景
+      description: What problem are you trying to solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution / 方案建议
+      description: Describe your preferred solution
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered / 备选方案
+      description: Any alternatives you considered?
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact / 影响范围
+      options:
+        - Low
+        - Medium
+        - High

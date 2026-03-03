@@ -1,0 +1,9 @@
+{
+  "name": "voice-hub-dev",
+  "version": "0.1.0",
+  "description": "Voice Hub development tools for Claude Code",
+  "author": "@voice-hub",
+  "license": "MIT",
+  "type": "local-marketplace",
+  "plugins": ["voice-hub-dev"]
+}

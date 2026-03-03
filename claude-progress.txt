@@ -1,0 +1,194 @@
+# Claude Progress - ddvh
+
+## [2026-03-02] - Session 3: 全量代码审查完成 ✅
+
+### 审查结论
+
+**Phase 1: 测试框架** ✅
+- 194 个测试通过
+- 核心模块已覆盖
+
+**Phase 2: TODO 清理** ✅
+- 核心 TODO 已全部清理
+- 非核心 TODO (5个) 保留在插件层，不影响稳定性
+
+**Phase 3: 内存泄漏审查** ✅ **无需修复**
+- SessionRegistry: cleanup() + 自动调用机制已实现
+- OmniClient: heartbeatInterval 正确清理
+- voice-connection: destroyConnection() 正确清理资源
+- RuntimeBootstrap: shutdown() 正确清理所有 intervals
+
+**Phase 4: 代码风格** ✅ **已符合标准**
+- ESLint: 通过 (0 errors)
+- TypeScript: 类型检查全部通过
+- 文档注释: 采用简洁的 /** */ 风格，已覆盖关键组件
+
+### 验证结果
+```bash
+pnpm test          # ✅ 194 tests passed
+pnpm typecheck     # ✅ 无错误
+pnpm lint          # ✅ 通过
+pnpm smoke-test    # ✅ 13/13 passed
+pnpm build         # ✅ 成功
+```
+
+### 审查发现汇总
+
+| 优先级 | 问题 | 状态 |
+|--------|------|------|
+| CRITICAL | 零测试覆盖 | ✅ 已解决 (194 tests) |
+| HIGH | 未实现 TODO | ✅ 已清理核心功能 |
+| MEDIUM | 内存泄漏 | ✅ 无问题 |
+| LOW | 代码风格 | ✅ 符合标准 |
+
+### 项目健康度: **9/10** 🎉
+
+### 剩余非阻塞工作 (可选)
+- claude-mcp-server/tools.ts: 3 个 TODO (插件扩展功能)
+- openclaw-plugin/src/index.ts: 2 个 TODO (可选集成)
+
+---
+
+## [2026-03-02] - Session 2: 代码审查与测试
+
+### 完成
+- ✅ Phase 1: 基础测试框架 - 194 个测试通过
+  - shared-config: 87 tests
+  - core-runtime SessionRegistry: 42 tests
+  - provider-volcengine-omni protocol: 45 tests
+  - audio-engine Packetizer: 20 tests
+
+- ✅ Phase 2: 清理核心 TODO 注释
+  - protocol.ts: 7 个 TODO 已清理
+  - ResultAnnouncer.ts: TTS TODO 已清理
+
+### 测试覆盖率改进
+- **之前**: 0% 测试覆盖率
+- **现在**: 核心模块有基础测试覆盖
+- **命令**: `pnpm test` 运行所有测试
+
+### 剩余 TODO (非核心，5个)
+- claude-mcp-server/tools.ts: 3 个 TODO
+- openclaw-plugin/src/index.ts: 2 个 TODO
+
+### 下一步建议
+1. Phase 3: 代码质量改进 (内存泄漏修复)
+2. Phase 4: 代码风格 (ESLint、JSDoc)
+
+---
+
+## [2026-03-02] - Session 1
+
+### 完成
+- ✅ 创建完整的 Discord 语音机器人 monorepo 项目结构
+- ✅ 实现了所有 10 个阶段的核心代码骨架
+
+### 项目结构
+```
+discord-doubao-voice-hub/
+├── apps/
+│   └── bridge-daemon/          # 主守护进程
+├── packages/
+│   ├── core-runtime/           # 核心编排逻辑
+│   ├── audio-engine/           # 音频处理引擎
+│   ├── provider-volcengine-omni/    # 豆包 Omni WebSocket 客户端
+│   ├── memory-bank/            # SQLite 历史存储
+│   ├── backend-dispatcher/     # 后端任务分发 + webhook
+│   ├── shared-config/          # 共享配置和类型
+│   ├── openclaw-plugin/        # OpenClaw 插件壳
+│   ├── claude-mcp-server/      # MCP Server
+│   └── claude-marketplace/     # Claude Code 本地 marketplace
+├── scripts/                    # 安装和工具脚本
+├── docs/                       # 文档
+└── 根配置文件
+```
+
+### 核心组件实现
+
+**Phase 1: 基础设施**
+- pnpm-workspace.yaml
+- 根 package.json (包含所有 scripts)
+- tsconfig.base.json (TypeScript 严格模式)
+- .env.example (环境变量模板)
+- .gitignore
+
+**Phase 2: 音频引擎**
+- AudioIngressPump - Discord 入站音频处理
+- AudioEgressPump - 出站音频播放
+- Packetizer - 200ms 合包
+- Resampler - 重采样 48kHz→16kHz
+- DiscordReceiveWatchdog - 监控和解密失败处理
+
+**Phase 3: Provider 适配器**
+- OmniClient - WebSocket 客户端
+- OmniSessionManager - 会话管理
+- BargeInStateMachine - 语音打断状态机
+- protocol.ts - 协议定义 (含 TODO 标记)
+- types.ts - 类型定义
+- event-parser.ts - 事件解析
+
+**Phase 4: Memory Bank**
+- schema.sql - 数据库表结构
+- DatabaseManager - SQLite 连接管理
+- PitfallQueries/PatternQueries - 历史查询
+- seed.ts - 示例数据
+
+**Phase 5: Backend Dispatcher**
+- BackendClient - HTTP 异步分发
+- WebhookServer - Fastify webhook 接收器
+- SignatureVerifier - 签名验证 (HMAC SHA256)
+
+**Phase 6: Core Runtime**
+- SessionRegistry - 活跃会话追踪
+- ActiveConversationStore - 对话历史
+- IntentInterceptor - 意图识别和路由
+- ResultAnnouncer - 结果播报
+- ToolDispatcher - 工具调用分发
+- RuntimeBootstrap - 主协调器
+
+**Phase 7: Bridge Daemon**
+- DiscordBot - Discord bot 封装
+- VoiceConnectionHandler - 语音连接管理
+- index.ts - 主入口 (支持 dotenv)
+
+**Phase 8: 插件集成**
+- openclaw-plugin/openclaw.plugin.json
+- claude-mcp-server/src/tools.ts (7 个工具)
+- claude-marketplace/ (3 个 skills)
+
+**Phase 9: 工程化**
+- .eslintrc.json - ESLint 配置
+- .prettierrc.json - Prettier 配置
+- vitest.config.ts - Vitest 测试配置
+- scripts/smoke-test.mjs - 冒烟测试
+
+**Phase 10: 文档**
+- README.md - 项目总览
+- README.openclaw.md - OpenClaw 插件文档
+- README.claude-code.md - Claude Code 集成文档
+- docs/dev.md - 开发指南
+- docs/architecture.md - 架构文档
+- docs/install.md - 安装指南
+
+### Scripts
+- install-openclaw-local.sh - 安装 OpenClaw 插件
+- pack-openclaw-plugin.sh - 打包 OpenClaw 插件
+- install-claude-plugin-local.sh - 安装 Claude Code 插件
+
+### 验证步骤
+1. pnpm install - 安装依赖
+2. pnpm typecheck - 类型检查
+3. pnpm build - 构建
+4. pnpm test - 运行测试
+5. pnpm smoke-test - 冒烟测试 (✅ 13 passed)
+
+### 遇到的问题
+- smoke-test.mjs 中使用了 TypeScript interface 语法（不兼容 .mjs）→ 已修复
+
+### 下一步建议
+1. 运行 `pnpm install` 安装所有依赖
+2. 复制 `.env.example` 到 `.env` 并填写凭证
+3. 运行 `pnpm build` 构建所有包
+4. 运行 `pnpm typecheck` 进行类型检查
+5. 测试 Discord bot 连接
+6. 确认 Volcengine 协议字段并移除 TODO 标记
